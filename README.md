@@ -13,7 +13,26 @@
 
 ## 🚀 Быстрый старт
 
-1. Клонировать репозиторий:
+1. Клонировать репозиторий и запустить:
    ```bash
    git clone https://github.com/YourPancakes/AdminDashboard.git
    cd AdminDashboard-main
+   docker-compose up --build
+
+2. Frontend на http://localhost:5173
+Api на http://localhost:5000
+Данные для входа: admin@mirra.dev / admin123
+```bash
+Получение токена через curl
+curl.exe -X POST "http://localhost:5000/auth/login" ^
+  -H "Content-Type: application/json" ^
+  -d "{\"email\":\"admin@mirra.dev\",\"pwd\":\"admin123\"}"
+
+Get All Clietns: 
+curl.exe "http://localhost:5000/clients" ^
+  -H "Authorization: Bearer <TOKEN>"
+Create new client
+curl.exe -X POST "http://localhost:5000/clients" ^
+  -H "Authorization: Bearer TOKEN" ^ 
+  -H "Content-Type: application/json" ^  
+  -d "{\"name\":\"Dave\",\"email\":\"dave@example.com\",\"balanceT\":123.45}"
