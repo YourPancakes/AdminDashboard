@@ -20,7 +20,7 @@ public class PostgresIntegrationTests : IDisposable
 
         _db = new AppDbContext(options);
         _db.Database.EnsureDeleted();
-        _db.Database.EnsureCreated();
+        _db.Database.Migrate();
         DbSeeder.Seed(_db);
     }
 
