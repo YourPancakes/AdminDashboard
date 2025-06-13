@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-test:
@@ -27,18 +27,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup .NET 8
+      - name: Install .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "8.0.x"
+          dotnet-version: '8.0.x'
 
-      - name: Restore dependencies
-        working-directory: AdminDashboard.Api
-        run: dotnet restore AdminDashboard.Api.csproj
+      - name: Restore all .NET dependencies
+        run: |
+          dotnet restore AdminDashboard.sln
+        # ✅ Правильный контекст: восстанавливаем решение, чтобы покрыть все проекты
 
       - name: Build API
         working-directory: AdminDashboard.Api
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build --configuration Release
+        # ❌ Убрали --no-restore, иначе assets-файл может отсутствовать
 
       - name: Run EF Migrations
         working-directory: AdminDashboard.Api
