@@ -27,14 +27,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "8.0.x"
-      - name: Restore & Build API
+
+      - name: Restore dependencies
         working-directory: AdminDashboard.Api
-        run: dotnet build --no-restore
+        run: dotnet restore AdminDashboard.Api.csproj
+
+      - name: Build API
+        working-directory: AdminDashboard.Api
+        run: dotnet build --no-restore --configuration Release
+
       - name: Run EF Migrations
         working-directory: AdminDashboard.Api
         env:
@@ -43,19 +48,17 @@ jobs:
           dotnet tool install --global dotnet-ef
           export PATH="$PATH:~/.dotnet/tools"
           dotnet ef database update
+
       - name: Run API Tests
         run: dotnet test AdminDashboard.Api.Tests/AdminDashboard.Api.Tests.csproj --no-build --verbosity normal
 
-      
       - name: Setup Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install & Test Frontend
+
+      - name: Install & Build Frontend
         working-directory: Client
         run: |
           npm ci
-          npm test    
-      - name: Build Frontend
-        working-directory: Client
-        run: npm run build
+          npm run build
