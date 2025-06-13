@@ -23,6 +23,7 @@
 Api на http://localhost:5000
 Данные для входа: admin@mirra.dev / admin123
 
+(Windows)
 Получение токена через curl:
 ```bash
 curl.exe -X POST "http://localhost:5000/auth/login" ^
