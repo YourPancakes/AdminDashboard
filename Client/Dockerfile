@@ -4,8 +4,9 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
-
-FROM nginx:stable-alpine AS runtime
-COPY --from=build /app/dist /usr/share/nginx/html
+FROM node:18-alpine AS runtime
+WORKDIR /app
+COPY --from=build /app/dist ./dist
+RUN npm install -g serve
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["serve", "-s", "dist", "-l", "80"]
