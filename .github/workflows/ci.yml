@@ -35,12 +35,10 @@ jobs:
       - name: Restore all .NET dependencies
         run: |
           dotnet restore AdminDashboard.sln
-        # ✅ Правильный контекст: восстанавливаем решение, чтобы покрыть все проекты
 
       - name: Build API
         working-directory: AdminDashboard.Api
         run: dotnet build --configuration Release
-        # ❌ Убрали --no-restore, иначе assets-файл может отсутствовать
 
       - name: Run EF Migrations
         working-directory: AdminDashboard.Api
