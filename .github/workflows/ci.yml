@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build-and-test:
@@ -27,18 +27,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install .NET SDK
+      
+      - name: Setup .NET 8
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore all .NET dependencies
-        run: dotnet restore AdminDashboard.sln
-
-      - name: Build API
+          dotnet-version: "8.0.x"
+      - name: Restore & Build API
         working-directory: AdminDashboard.Api
-        run: dotnet build --configuration Release
-
+        run: dotnet build --no-restore
       - name: Run EF Migrations
         working-directory: AdminDashboard.Api
         env:
@@ -47,18 +43,19 @@ jobs:
           dotnet tool install --global dotnet-ef
           export PATH="$PATH:~/.dotnet/tools"
           dotnet ef database update
-
       - name: Run API Tests
-        working-directory: AdminDashboard.Api
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet test AdminDashboard.Api.Tests/AdminDashboard.Api.Tests.csproj --no-build --verbosity normal
 
+      
       - name: Setup Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: 18
-
-      - name: Install & Build Frontend
+      - name: Install & Test Frontend
         working-directory: Client
         run: |
           npm ci
-          npm run build
+          npm test    
+      - name: Build Frontend
+        working-directory: Client
+        run: npm run build
