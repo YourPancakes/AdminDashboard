@@ -16,7 +16,7 @@
 1. Клонировать репозиторий и запустить:
    ```bash
    git clone https://github.com/YourPancakes/AdminDashboard.git
-   cd AdminDashboard-main
+   cd AdminDashboard
    docker-compose up --build
 
 2. Frontend на http://localhost:5173
