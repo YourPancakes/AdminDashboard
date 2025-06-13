@@ -1,4 +1,3 @@
-import React from 'react';
 import type { ClientDto } from '../types';
 
 interface Props {

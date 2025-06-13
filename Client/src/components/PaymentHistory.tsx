@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { PaymentDto } from '../types';
 import { getClientPayments } from '../api';
 

@@ -6,8 +6,7 @@ import {
   updateClient,
   deleteClient,
 } from '../api';
-import { getClientPayments } from '../api';
-import type { ClientDto, RateDto, PaymentDto } from '../types';
+import type { ClientDto, RateDto } from '../types';
 import { ClientTable } from '../components/ClientTable';
 import { ClientForm } from '../components/ClientForm';
 import { PaymentHistory } from '../components/PaymentHistory';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { RateDto } from '../types';
 import { updateRate } from '../api';
 

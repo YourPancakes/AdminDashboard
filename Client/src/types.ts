@@ -10,3 +10,11 @@ export interface RateDto {
   currentRate: number;
   updatedAt: string;
 }
+
+export interface PaymentDto {
+  id: number;
+  clientId: number;
+  amountT: number;
+  timestamp: string;
+  client: ClientDto;
+}
