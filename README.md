@@ -20,8 +20,8 @@
    docker-compose up --build
 
 2. Frontend на http://localhost:5173
-Api на http://localhost:5000
-Данные для входа: admin@mirra.dev / admin123
+3. Api на http://localhost:5000
+4. Данные для входа: admin@mirra.dev / admin123
 
 (Windows)
 Получение токена через curl:
