@@ -15,5 +15,5 @@
 
 1. Клонировать репозиторий:
    ```bash
-   git clone https://github.com/yourusername/admin-dashboard.git
+   git clone https://github.com/YourPancakes/AdminDashboard.git
    cd admin-dashboard
