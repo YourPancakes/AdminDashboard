@@ -1,6 +1,5 @@
 import type { ClientDto, PaymentDto, RateDto  } from './types';  
 
-//const BASE = '/api';
 const BASE = import.meta.env.VITE_API_URL as string;
 
 export async function login(email: string, pwd: string) {
@@ -13,7 +12,7 @@ export async function login(email: string, pwd: string) {
   return res.json() as Promise<{ token: string }>;
 }
 
-/** Всегда возвращаем HeadersInit */
+
 function authHeaders(): HeadersInit {
   const token = localStorage.getItem('token');
   const headers: Record<string, string> = {};
@@ -25,13 +24,13 @@ function authHeaders(): HeadersInit {
 
 export async function getClients() {
   const res = await fetch(`${BASE}/clients`, { headers: authHeaders() });
-  if (!res.ok) throw new Error('Ошибка загрузки клиентов');
+  if (!res.ok) throw new Error('Failed to load clients');
   return res.json() as Promise<ClientDto[]>;
 }
 
 export async function getRate() {
   const res = await fetch(`${BASE}/rate`, { headers: authHeaders() });
-  if (!res.ok) throw new Error('Ошибка загрузки курса');
+  if (!res.ok) throw new Error('Failed to load exchange rate');
   return res.json() as Promise<RateDto>;
 }
 
@@ -44,7 +43,7 @@ export async function updateRate(currentRate: number) {
     },
     body: JSON.stringify({ currentRate }),
   });
-  if (!res.ok) throw new Error('Не удалось обновить курс');
+  if (!res.ok) throw new Error('Failed to update exchange rate');
 }
 
 export async function createClient(dto: { name: string; email: string; balanceT: number }) {
@@ -56,7 +55,7 @@ export async function createClient(dto: { name: string; email: string; balanceT:
     },
     body: JSON.stringify(dto),
   });
-  if (!res.ok) throw new Error('Не удалось создать клиента');
+  if (!res.ok) throw new Error('Failed to create client');
   return res.json() as Promise<ClientDto>;
 }
 
@@ -69,7 +68,7 @@ export async function updateClient(id: number, dto: { name: string; email: strin
     },
     body: JSON.stringify(dto),
   });
-  if (!res.ok) throw new Error('Не удалось обновить клиента');
+  if (!res.ok) throw new Error('Failed to update client');
 }
 
 export async function deleteClient(id: number) {
@@ -77,14 +76,14 @@ export async function deleteClient(id: number) {
     method: 'DELETE',
     headers: authHeaders(),
   });
-  if (!res.ok) throw new Error('Не удалось удалить клиента');
+  if (!res.ok) throw new Error('Failed to delete client');
 }
 
 export async function getClientPayments(id: number) {
   const res = await fetch(`${BASE}/clients/${id}/payments`, {
     headers: authHeaders(),
   });
-  if (res.status === 404) throw new Error('Клиент не найден');
-  if (!res.ok) throw new Error('Ошибка загрузки платежей');
+  if (res.status === 404) throw new Error('Client not found');
+  if (!res.ok) throw new Error('Failed to load payments');
   return res.json() as Promise<PaymentDto[]>;
 }

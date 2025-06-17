@@ -29,7 +29,7 @@ export function DashboardPage() {
       setClients(c);
       setRate(r);
     } catch (err) {
-      console.error('Ошибка при загрузке данных:', err);
+      console.error('Error loading data:', err);
     }
   };
 
@@ -49,7 +49,7 @@ export function DashboardPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Удалить клиента?')) {
+    if (window.confirm('Delete client?')) {
       await deleteClient(id);
       await fetchData();
     }

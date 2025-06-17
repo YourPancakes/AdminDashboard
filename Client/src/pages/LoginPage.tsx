@@ -20,7 +20,7 @@ export function LoginPage({ onLogin }: Props) {
       onLogin(token);             
       navigate('/dashboard');     
     } catch {
-      setError('Неверные учётные данные');
+      setError('Invalid credentials');
     }
   };
 

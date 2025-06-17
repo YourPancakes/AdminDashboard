@@ -16,7 +16,7 @@ export function RateBlock({ rate, onUpdated }: Props) {
       await updateRate(value);
       onUpdated();
     } catch {
-      setError('Не удалось обновить курс');
+      setError('Failed to update the course');
     }
   };
 
