@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: admindb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore .NET dependencies
+        run: dotnet restore AdminDashboard.sln
+
+      - name: Build API
+        working-directory: AdminDashboard.Api
+        run: dotnet build --configuration Release
+
+      - name: Run EF Migrations
+        working-directory: AdminDashboard.Api
+        env:
+          ConnectionStrings__Default: Host=localhost;Port=5432;Database=admindb;Username=postgres;Password=postgres
+        run: |
+          dotnet tool install --global dotnet-ef
+          export PATH="$PATH:~/.dotnet/tools"
+          dotnet ef database update
+
+      - name: Run API Tests
+        working-directory: AdminDashboard.Api
+        env:
+          ConnectionStrings__Default: Host=localhost;Port=5432;Database=admindb;Username=postgres;Password=postgres
+        run: dotnet test --no-build --configuration Release --verbosity normal
